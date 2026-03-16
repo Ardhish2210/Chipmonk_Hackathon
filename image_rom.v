@@ -1,64 +1,67 @@
 // =============================================================================
-// image_rom.v  (fixed)
-// 8×8 grayscale image ROM.  Streams IMAGE_PIXELS pixels (one per clock)
-// starting the cycle after 'en' is sampled high.
+// image_rom.v  –  Streaming image ROM for CNN accelerator
 //
-// Timing: pixel_valid and pixel_out are registered together.
-// pixel[0] appears on the first valid cycle, pixel[IMAGE_PIXELS-1] on
-// the last.  Exactly IMAGE_PIXELS valid cycles are produced.
+// Streams pixels from a pre-loaded memory file one per clock cycle when
+// enabled.  After all IMAGE_PIXELS have been sent, asserts frame_done for
+// one cycle and stops.
+//
+// Notes on the 'en' signal:
+//   en is a LEVEL signal.  The ROM starts streaming on the first posedge
+//   where en=1, and continues until the frame is complete.
+//   Asserting rst (active-HIGH) resets the read pointer.
 // =============================================================================
 
 module image_rom #(
     parameter DATA_WIDTH   = 8,
-    parameter IMAGE_PIXELS = 4096
-)(
-    input  wire                         clk,
-    input  wire                         rst,
-    input  wire                         en,           // pulse or level to start
-    output reg  signed [DATA_WIDTH-1:0] pixel_out,    // registered pixel
-    output reg                          pixel_valid,   // high for IMAGE_PIXELS cycles
-    output reg                          frame_done     // one-cycle pulse after last pixel
+    parameter IMAGE_PIXELS = 4096   // 64×64
+) (
+    input  wire                      clk,
+    input  wire                      rst,         // active-HIGH
+    input  wire                      en,          // level: start/continue streaming
+    output reg  signed [DATA_WIDTH-1:0] pixel_out,
+    output reg                       pixel_valid,
+    output reg                       frame_done
 );
 
-    // ── ROM ──────────────────────────────────────────────────────────────────
+    // ── ROM storage ──────────────────────────────────────────────────────────
     reg [DATA_WIDTH-1:0] mem [0:IMAGE_PIXELS-1];
-    initial $readmemh("image.mem", mem);
 
-    // ── Counter / FSM ────────────────────────────────────────────────────────
-    reg [$clog2(IMAGE_PIXELS)-1:0] addr;
+    initial begin
+        $readmemh("image2.mem", mem);
+    end
+
+    // ── Read pointer ─────────────────────────────────────────────────────────
+    reg [$clog2(IMAGE_PIXELS)-1:0] rd_ptr;
     reg                             running;
 
     always @(posedge clk) begin
         if (rst) begin
-            addr        <= 0;
+            rd_ptr      <= 0;
             running     <= 1'b0;
             pixel_valid <= 1'b0;
-            pixel_out   <= 0;
             frame_done  <= 1'b0;
+            pixel_out   <= 0;
         end else begin
-            frame_done <= 1'b0;   // default
+            frame_done  <= 1'b0;   // default
+            pixel_valid <= 1'b0;   // default
 
-            if (!running && en) begin
-                // Latch pixel[0] and begin streaming
-                running     <= 1'b1;
-                addr        <= 0;
-                pixel_out   <= $signed(mem[0]);
+            if (en && !running) begin
+                running <= 1'b1;   // latch start
+            end
+
+            if (running) begin
+                // Output current pixel
+                pixel_out   <= $signed(mem[rd_ptr]);
                 pixel_valid <= 1'b1;
 
-            end else if (running) begin
-                if (addr == IMAGE_PIXELS - 1) begin
-                    // pixel[IMAGE_PIXELS-1] was on the bus this cycle → stop
-                    running     <= 1'b0;
-                    pixel_valid <= 1'b0;
-                    frame_done  <= 1'b1;
-                    addr        <= 0;
+                if (rd_ptr == IMAGE_PIXELS - 1) begin
+                    rd_ptr     <= 0;
+                    running    <= 1'b0;
+                    frame_done <= 1'b1;
+                    pixel_valid <= 1'b0;  // no valid on the wrap cycle
                 end else begin
-                    addr        <= addr + 1;
-                    pixel_out   <= $signed(mem[addr + 1]);
-                    pixel_valid <= 1'b1;
+                    rd_ptr <= rd_ptr + 1;
                 end
-            end else begin
-                pixel_valid <= 1'b0;
             end
         end
     end

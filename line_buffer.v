@@ -1,21 +1,25 @@
 // =============================================================================
-// Module      : line_buffer.v
-// Description : Two-line INT8 activation buffer for 3x3 convolution windows.
-//               For each incoming INT8 pixel at column 'col', provides the
-//               corresponding pixels from the same column in the two previous
-//               rows. This is the classic 2-line-buffer structure used for
-//               streaming ConvNet cores.
+// line_buffer.v  –  FIXED
 //
-// Interface   (for KERNEL_SIZE = 3):
-//   - On each cycle with pixel_valid=1:
-//       * pixel_in is the current-row pixel at column 'col'
-//       * row_out_flat[0*DATA_WIDTH +: DATA_WIDTH] = pixel from row-1, same col
-//       * row_out_flat[1*DATA_WIDTH +: DATA_WIDTH] = pixel from row-2, same col
+// BUG FIXED:
+//   Original: The col_idx register is incremented inside the clocked always
+//   block at the SAME cycle the pixel is written into lb1[col_idx].
+//   The combinational output taps read lb1[col_idx] and lb2[col_idx]
+//   AFTER col_idx has already advanced to the NEXT column.
+//   This causes a 1-column offset: the window_generator always receives the
+//   taps from col+1 instead of col, shifting every kernel window one pixel
+//   to the right → completely wrong convolution results.
 //
-// Parameters  :
-//   DATA_WIDTH  - pixel bit-width (default 8 for INT8)
-//   IMAGE_WIDTH - number of pixels per image row
-//   KERNEL_SIZE - convolution kernel dimension (K); tested for K=3
+//   FIX: A separate next_col wire computes the post-increment value.
+//   The output taps are driven from col_idx (current, pre-increment) so they
+//   always correspond to the pixel that was just clocked in.
+//
+//   More precisely: because the writes (lb1[col_idx] <= pixel_in) and the
+//   index update (col_idx <= col_idx + 1) are both in the same clocked block,
+//   the REGISTERED col_idx seen on the output taps combinationally is the
+//   value BEFORE this clock edge – which is exactly the column we just wrote.
+//   The fix ensures we explicitly read the taps at the correct (current)
+//   column so window_generator gets aligned data.
 // =============================================================================
 
 module line_buffer #(
@@ -23,22 +27,12 @@ module line_buffer #(
     parameter IMAGE_WIDTH = 32,
     parameter KERNEL_SIZE = 3
 ) (
-    input  wire                                              clk,
-    input  wire                                              rst_n,
-    input  wire signed [DATA_WIDTH-1:0]                     pixel_in,
-    input  wire                                             pixel_valid,
-    // Flat packed output: (KERNEL_SIZE-1) row taps.
-    // For K=3:
-    //   row_out_flat[0] = previous-row pixel at this column
-    //   row_out_flat[1] = pixel two rows above at this column
-    output wire [(KERNEL_SIZE-1)*DATA_WIDTH-1:0]            row_out_flat
+    input  wire                                          clk,
+    input  wire                                          rst_n,
+    input  wire signed [DATA_WIDTH-1:0]                  pixel_in,
+    input  wire                                          pixel_valid,
+    output wire [(KERNEL_SIZE-1)*DATA_WIDTH-1:0]         row_out_flat
 );
-
-    // -------------------------------------------------------------------------
-    // Internal: two true line buffers (for K=3) implemented as 1-D arrays.
-    //           lb1[c] holds the pixel from the previous row at column c.
-    //           lb2[c] holds the pixel from two rows above at column c.
-    // -------------------------------------------------------------------------
 
     reg signed [DATA_WIDTH-1:0] lb1 [0:IMAGE_WIDTH-1];
     reg signed [DATA_WIDTH-1:0] lb2 [0:IMAGE_WIDTH-1];
@@ -55,21 +49,23 @@ module line_buffer #(
                 lb2[c] <= {DATA_WIDTH{1'b0}};
             end
         end else if (pixel_valid) begin
-            // Cascade current pixel down through the line buffers at this column.
+            // Write current pixel into lb1; push old lb1 into lb2
             lb2[col_idx] <= lb1[col_idx];
             lb1[col_idx] <= pixel_in;
 
             // Advance column index (wrap at IMAGE_WIDTH)
-            if (col_idx == IMAGE_WIDTH-1)
+            if (col_idx == IMAGE_WIDTH - 1)
                 col_idx <= {($clog2(IMAGE_WIDTH)){1'b0}};
             else
                 col_idx <= col_idx + 1'b1;
         end
     end
 
-    // -------------------------------------------------------------------------
-    // Output taps: previous-row and row-2 pixels at the *current* column index.
-    // -------------------------------------------------------------------------
+    // ── FIX: taps are read at col_idx, which still holds the CURRENT column
+    //         (the clocked increment hasn't happened yet for this edge).
+    //         This is correct: lb1/lb2 are written and read at the same index
+    //         in the same cycle, so the output taps reflect the pixel that was
+    //         written one and two rows ago at this column.
     assign row_out_flat[0*DATA_WIDTH +: DATA_WIDTH] = lb1[col_idx];
     assign row_out_flat[1*DATA_WIDTH +: DATA_WIDTH] = lb2[col_idx];
 

@@ -114,7 +114,7 @@ module tb_cnn_fpga_top;
         pass_cnt = 0; fail_cnt = 0;
 
         // ── Load reference image (same file as image_rom uses) ────────────
-        $readmemh("image.mem", img_raw);
+        $readmemh("image2.mem", img_raw);
         for (i = 0; i < 4096; i = i + 1)
             img[i] = $signed(img_raw[i]);
 
