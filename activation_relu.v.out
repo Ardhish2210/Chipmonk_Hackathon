@@ -1,0 +1,57 @@
+#! /c/iverilog/bin/vvp
+:ivl_version "0.9.7 " "(v0_9_7)";
+:vpi_time_precision + 0;
+:vpi_module "system";
+:vpi_module "v2005_math";
+:vpi_module "va_math";
+S_009F8558 .scope module, "activation_relu" "activation_relu" 2 20;
+ .timescale 0 0;
+P_009F34F4 .param/l "ACC_WIDTH" 2 21, +C4<0100000>;
+P_009F3508 .param/l "OUT_WIDTH" 2 22, +C4<01000>;
+P_009F351C .param/l "SAT_MAX" 2 36, C4<00000000000000000000000011111111>;
+v009F3538_0 .net *"_s1", 0 0, L_009FDFA0; 1 drivers
+v009F3590_0 .net *"_s10", 7 0, C4<11111111>; 1 drivers
+v009F35E8_0 .net *"_s13", 7 0, L_009FDF48; 1 drivers
+v009F3640_0 .net *"_s2", 31 0, C4<00000000000000000000000000000000>; 1 drivers
+v009FD7E8_0 .net *"_s6", 31 0, C4<00000000000000000000000011111111>; 1 drivers
+v009FD840_0 .net *"_s8", 0 0, L_009FDC88; 1 drivers
+v009FD898_0 .net/s "acc_in", 31 0, C4<zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz>; 0 drivers
+v009FD8F0_0 .net "clk", 0 0, C4<z>; 0 drivers
+v009FD948_0 .var "feature", 7 0;
+v009FD9A0_0 .net/s "relu_val", 31 0, L_009FE158; 1 drivers
+v009FD9F8_0 .net "rst_n", 0 0, C4<z>; 0 drivers
+v009FDA50_0 .net "sat_val", 7 0, L_009FE208; 1 drivers
+v009FDAA8_0 .net "valid_in", 0 0, C4<z>; 0 drivers
+v009FDC30_0 .var "valid_out", 0 0;
+E_009F9858 .event posedge, v009FD8F0_0;
+L_009FDFA0 .part C4<zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz>, 31, 1;
+L_009FE158 .functor MUXZ 32, C4<zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz>, C4<00000000000000000000000000000000>, L_009FDFA0, C4<>;
+L_009FDC88 .cmp/gt 32, L_009FE158, C4<00000000000000000000000011111111>;
+L_009FDF48 .part L_009FE158, 0, 8;
+L_009FE208 .functor MUXZ 8, L_009FDF48, C4<11111111>, L_009FDC88, C4<>;
+    .scope S_009F8558;
+T_0 ;
+    %wait E_009F9858;
+    %load/v 8, v009FD9F8_0, 1;
+    %inv 8, 1;
+    %jmp/0xz  T_0.0, 8;
+    %ix/load 0, 8, 0;
+    %assign/v0 v009FD948_0, 0, 0;
+    %ix/load 0, 1, 0;
+    %assign/v0 v009FDC30_0, 0, 0;
+    %jmp T_0.1;
+T_0.0 ;
+    %load/v 8, v009FDA50_0, 8;
+    %ix/load 0, 8, 0;
+    %assign/v0 v009FD948_0, 0, 8;
+    %load/v 8, v009FDAA8_0, 1;
+    %ix/load 0, 1, 0;
+    %assign/v0 v009FDC30_0, 0, 8;
+T_0.1 ;
+    %jmp T_0;
+    .thread T_0;
+# The file index is used to find the file name in the following table.
+:file_names 3;
+    "N/A";
+    "<interactive>";
+    "activation_relu.v";

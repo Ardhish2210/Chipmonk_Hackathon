@@ -1,0 +1,214 @@
+#! /c/iverilog/bin/vvp
+:ivl_version "0.9.7 " "(v0_9_7)";
+:vpi_time_precision + 0;
+:vpi_module "system";
+:vpi_module "v2005_math";
+:vpi_module "va_math";
+S_00EA3EF0 .scope module, "Async_fifo" "Async_fifo" 2 3;
+ .timescale 0 0;
+P_0100D6FC .param/l "address_size" 2 17, +C4<0100>;
+P_0100D710 .param/l "data_width" 2 15, +C4<01000>;
+P_0100D724 .param/l "fifo_depth" 2 16, +C4<0101>;
+L_0100CE50 .functor XOR 4, v00EDB120_0, L_00EDB670, C4<0000>, C4<0000>;
+L_0100D010 .functor XOR 4, v00EDAD00_0, L_00EDBDA8, C4<0000>, C4<0000>;
+L_00EDC778 .functor NOT 2, L_00EDB930, C4<00>, C4<00>, C4<00>;
+v010038C8_0 .net *"_s0", 3 0, L_00EDB670; 1 drivers
+v01003B48_0 .net *"_s10", 2 0, L_00EDB8D8; 1 drivers
+v0100BA18_0 .net *"_s12", 0 0, C4<0>; 1 drivers
+v0100BA70_0 .net *"_s19", 1 0, L_00EDB930; 1 drivers
+v00EA5090_0 .net *"_s2", 2 0, L_00EDB880; 1 drivers
+v00EA50E8_0 .net *"_s20", 1 0, L_00EDC778; 1 drivers
+v00EA5558_0 .net *"_s23", 1 0, L_00EDBA90; 1 drivers
+v00EDACA8_0 .net *"_s24", 3 0, L_00EDB6C8; 1 drivers
+v00EDB1D0_0 .net *"_s4", 0 0, C4<0>; 1 drivers
+v00EDB280_0 .net *"_s8", 3 0, L_00EDBDA8; 1 drivers
+v00EDAD58_0 .net "empty", 0 0, L_00EDBA38; 1 drivers
+v00EDADB0_0 .net "full", 0 0, L_00EDB7D0; 1 drivers
+v00EDAE08 .array "mem", 0 4, 7 0;
+v00EDAE60_0 .var "overflow", 0 0;
+v00EDAEB8_0 .net "rd", 0 0, C4<z>; 0 drivers
+v00EDB178_0 .net "rd_clk", 0 0, C4<z>; 0 drivers
+v00EDAD00_0 .var "rd_pointer", 3 0;
+v00EDAF10_0 .net "rd_pointer_gray", 3 0, L_0100D010; 1 drivers
+v00EDAF68_0 .var "rd_pointer_gray_S1", 3 0;
+v00EDB228_0 .var "rd_pointer_gray_S2", 3 0;
+v00EDAFC0_0 .var "rdata", 7 0;
+v00EDB018_0 .net "rst_n", 0 0, C4<z>; 0 drivers
+v00EDB070_0 .var "underflow", 0 0;
+v00EDB2D8_0 .var "valid", 0 0;
+v00EDB330_0 .net "wdata", 7 0, C4<zzzzzzzz>; 0 drivers
+v00EDB388_0 .net "wr", 0 0, C4<z>; 0 drivers
+v00EDB0C8_0 .net "wr_clk", 0 0, C4<z>; 0 drivers
+v00EDB120_0 .var "wr_pointer", 3 0;
+v00EDAC50_0 .net "wr_pointer_gray", 3 0, L_0100CE50; 1 drivers
+v00EDB618_0 .var "wr_pointer_gray_S1", 3 0;
+v00EDB9E0_0 .var "wr_pointer_gray_S2", 3 0;
+E_00EA48B8/0 .event negedge, v00EDB018_0;
+E_00EA48B8/1 .event posedge, v00EDB178_0;
+E_00EA48B8 .event/or E_00EA48B8/0, E_00EA48B8/1;
+E_00EA4978/0 .event negedge, v00EDB018_0;
+E_00EA4978/1 .event posedge, v00EDB0C8_0;
+E_00EA4978 .event/or E_00EA4978/0, E_00EA4978/1;
+L_00EDB880 .part v00EDB120_0, 1, 3;
+L_00EDB670 .concat [ 3 1 0 0], L_00EDB880, C4<0>;
+L_00EDB8D8 .part v00EDAD00_0, 1, 3;
+L_00EDBDA8 .concat [ 3 1 0 0], L_00EDB8D8, C4<0>;
+L_00EDBA38 .cmp/eq 4, L_0100D010, v00EDB9E0_0;
+L_00EDB930 .part v00EDB228_0, 2, 2;
+L_00EDBA90 .part v00EDB228_0, 0, 2;
+L_00EDB6C8 .concat [ 2 2 0 0], L_00EDBA90, L_00EDC778;
+L_00EDB7D0 .cmp/eq 4, L_0100CE50, L_00EDB6C8;
+    .scope S_00EA3EF0;
+T_0 ;
+    %wait E_00EA4978;
+    %load/v 8, v00EDB018_0, 1;
+    %inv 8, 1;
+    %jmp/0xz  T_0.0, 8;
+    %ix/load 0, 4, 0;
+    %assign/v0 v00EDB120_0, 0, 0;
+    %jmp T_0.1;
+T_0.0 ;
+    %load/v 8, v00EDADB0_0, 1;
+    %inv 8, 1;
+    %load/v 9, v00EDB388_0, 1;
+    %and 8, 9, 1;
+    %jmp/0xz  T_0.2, 8;
+    %load/v 8, v00EDB330_0, 8;
+    %load/v 16, v00EDB120_0, 3; Only need 3 of 4 bits
+; Save base=16 wid=3 in lookaside.
+    %ix/get 3, 16, 3;
+    %jmp/1 t_0, 4;
+    %ix/load 0, 8, 0; word width
+    %ix/load 1, 0, 0; part off
+    %assign/av v00EDAE08, 0, 8;
+t_0 ;
+    %load/v 8, v00EDB120_0, 4;
+    %mov 12, 0, 28;
+    %addi 8, 1, 32;
+    %ix/load 0, 4, 0;
+    %assign/v0 v00EDB120_0, 0, 8;
+T_0.2 ;
+T_0.1 ;
+    %jmp T_0;
+    .thread T_0;
+    .scope S_00EA3EF0;
+T_1 ;
+    %wait E_00EA48B8;
+    %load/v 8, v00EDB018_0, 1;
+    %inv 8, 1;
+    %jmp/0xz  T_1.0, 8;
+    %ix/load 0, 4, 0;
+    %assign/v0 v00EDAD00_0, 0, 0;
+    %jmp T_1.1;
+T_1.0 ;
+    %load/v 8, v00EDAD58_0, 1;
+    %inv 8, 1;
+    %load/v 9, v00EDAEB8_0, 1;
+    %and 8, 9, 1;
+    %jmp/0xz  T_1.2, 8;
+    %load/v 16, v00EDAD00_0, 3; Only need 3 of 4 bits
+; Save base=16 wid=3 in lookaside.
+    %ix/get 3, 16, 3;
+    %load/av 8, v00EDAE08, 8;
+    %ix/load 0, 8, 0;
+    %assign/v0 v00EDAFC0_0, 0, 8;
+    %load/v 8, v00EDAD00_0, 4;
+    %mov 12, 0, 28;
+    %addi 8, 1, 32;
+    %ix/load 0, 4, 0;
+    %assign/v0 v00EDAD00_0, 0, 8;
+T_1.2 ;
+T_1.1 ;
+    %jmp T_1;
+    .thread T_1;
+    .scope S_00EA3EF0;
+T_2 ;
+    %wait E_00EA48B8;
+    %load/v 8, v00EDB018_0, 1;
+    %inv 8, 1;
+    %jmp/0xz  T_2.0, 8;
+    %ix/load 0, 4, 0;
+    %assign/v0 v00EDB618_0, 0, 0;
+    %ix/load 0, 4, 0;
+    %assign/v0 v00EDB9E0_0, 0, 0;
+    %jmp T_2.1;
+T_2.0 ;
+    %load/v 8, v00EDAC50_0, 4;
+    %ix/load 0, 4, 0;
+    %assign/v0 v00EDB618_0, 0, 8;
+    %load/v 8, v00EDB618_0, 4;
+    %ix/load 0, 4, 0;
+    %assign/v0 v00EDB9E0_0, 0, 8;
+T_2.1 ;
+    %jmp T_2;
+    .thread T_2;
+    .scope S_00EA3EF0;
+T_3 ;
+    %wait E_00EA4978;
+    %load/v 8, v00EDB018_0, 1;
+    %inv 8, 1;
+    %jmp/0xz  T_3.0, 8;
+    %ix/load 0, 4, 0;
+    %assign/v0 v00EDAF68_0, 0, 0;
+    %ix/load 0, 4, 0;
+    %assign/v0 v00EDB228_0, 0, 0;
+    %jmp T_3.1;
+T_3.0 ;
+    %load/v 8, v00EDAF10_0, 4;
+    %ix/load 0, 4, 0;
+    %assign/v0 v00EDAF68_0, 0, 8;
+    %load/v 8, v00EDAF68_0, 4;
+    %ix/load 0, 4, 0;
+    %assign/v0 v00EDB228_0, 0, 8;
+T_3.1 ;
+    %jmp T_3;
+    .thread T_3;
+    .scope S_00EA3EF0;
+T_4 ;
+    %wait E_00EA4978;
+    %load/v 8, v00EDB018_0, 1;
+    %inv 8, 1;
+    %jmp/0xz  T_4.0, 8;
+    %ix/load 0, 1, 0;
+    %assign/v0 v00EDAE60_0, 0, 0;
+    %jmp T_4.1;
+T_4.0 ;
+    %load/v 8, v00EDADB0_0, 1;
+    %load/v 9, v00EDB388_0, 1;
+    %and 8, 9, 1;
+    %ix/load 0, 1, 0;
+    %assign/v0 v00EDAE60_0, 0, 8;
+T_4.1 ;
+    %jmp T_4;
+    .thread T_4;
+    .scope S_00EA3EF0;
+T_5 ;
+    %wait E_00EA48B8;
+    %load/v 8, v00EDB018_0, 1;
+    %inv 8, 1;
+    %jmp/0xz  T_5.0, 8;
+    %ix/load 0, 1, 0;
+    %assign/v0 v00EDB070_0, 0, 0;
+    %ix/load 0, 1, 0;
+    %assign/v0 v00EDB2D8_0, 0, 0;
+    %jmp T_5.1;
+T_5.0 ;
+    %load/v 8, v00EDAD58_0, 1;
+    %load/v 9, v00EDAEB8_0, 1;
+    %and 8, 9, 1;
+    %ix/load 0, 1, 0;
+    %assign/v0 v00EDB070_0, 0, 8;
+    %load/v 8, v00EDAEB8_0, 1;
+    %load/v 9, v00EDAD58_0, 1;
+    %inv 9, 1;
+    %and 8, 9, 1;
+    %ix/load 0, 1, 0;
+    %assign/v0 v00EDB2D8_0, 0, 8;
+T_5.1 ;
+    %jmp T_5;
+    .thread T_5;
+# The file index is used to find the file name in the following table.
+:file_names 3;
+    "N/A";
+    "<interactive>";
+    "fifo.v";

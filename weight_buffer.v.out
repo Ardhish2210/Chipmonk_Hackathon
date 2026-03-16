@@ -1,0 +1,124 @@
+#! /c/iverilog/bin/vvp
+:ivl_version "0.9.7 " "(v0_9_7)";
+:vpi_time_precision + 0;
+:vpi_module "system";
+:vpi_module "v2005_math";
+:vpi_module "va_math";
+S_012B8090 .scope module, "weight_buffer" "weight_buffer" 2 1;
+ .timescale 0 0;
+P_012B306C .param/l "DATA_WIDTH" 2 2, +C4<01000>;
+P_012B3080 .param/l "KERNEL_SIZE" 2 3, +C4<011>;
+P_012B3094 .param/l "NUM_WEIGHTS" 2 14, +C4<01001>;
+L_010F0438 .functor BUFZ 1, C4<z>, C4<0>, C4<0>, C4<0>;
+v010EFBE0_0 .net "clk", 0 0, C4<z>; 0 drivers
+v010EFEA0_0 .var/i "i", 31 0;
+v010EFA28_0 .net "rst_n", 0 0, C4<z>; 0 drivers
+RS_010F410C/0/0 .resolv tri, L_010EFCE8, L_010EFAD8, L_010EFC38, L_010EFD40;
+RS_010F410C/0/4 .resolv tri, L_010EFDF0, L_010EFEF8, L_010EFF50, L_010EFE48;
+RS_010F410C/0/8 .resolv tri, L_010EFFA8, C4<zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz>, C4<zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz>, C4<zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz>;
+RS_010F410C .resolv tri, RS_010F410C/0/0, RS_010F410C/0/4, RS_010F410C/0/8, C4<zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz>;
+v010EFB30_0 .net8/s "weight_flat", 71 0, RS_010F410C; 9 drivers
+v010EF9D0_0 .net "weight_loaded", 0 0, L_010F0438; 1 drivers
+v010EFD98_0 .net "weight_wr_addr", 3 0, C4<zzzz>; 0 drivers
+v010EFA80_0 .net/s "weight_wr_data", 7 0, C4<zzzzzzzz>; 0 drivers
+v010F0058_0 .net "weight_wr_en", 0 0, C4<z>; 0 drivers
+v010EFB88 .array/s "weights", 8 0, 7 0;
+E_012BA4F0/0 .event negedge, v010EFA28_0;
+E_012BA4F0/1 .event posedge, v010EFBE0_0;
+E_012BA4F0 .event/or E_012BA4F0/0, E_012BA4F0/1;
+v010EFB88_0 .array/port v010EFB88, 0;
+L_010EFCE8 .part/pv v010EFB88_0, 0, 8, 72;
+v010EFB88_1 .array/port v010EFB88, 1;
+L_010EFAD8 .part/pv v010EFB88_1, 8, 8, 72;
+v010EFB88_2 .array/port v010EFB88, 2;
+L_010EFC38 .part/pv v010EFB88_2, 16, 8, 72;
+v010EFB88_3 .array/port v010EFB88, 3;
+L_010EFD40 .part/pv v010EFB88_3, 24, 8, 72;
+v010EFB88_4 .array/port v010EFB88, 4;
+L_010EFDF0 .part/pv v010EFB88_4, 32, 8, 72;
+v010EFB88_5 .array/port v010EFB88, 5;
+L_010EFEF8 .part/pv v010EFB88_5, 40, 8, 72;
+v010EFB88_6 .array/port v010EFB88, 6;
+L_010EFF50 .part/pv v010EFB88_6, 48, 8, 72;
+v010EFB88_7 .array/port v010EFB88, 7;
+L_010EFE48 .part/pv v010EFB88_7, 56, 8, 72;
+v010EFB88_8 .array/port v010EFB88, 8;
+L_010EFFA8 .part/pv v010EFB88_8, 64, 8, 72;
+S_012B84D0 .scope generate, "gen_wflat[0]" "gen_wflat[0]" 2 32, 2 32, S_012B8090;
+ .timescale 0 0;
+P_012BA5D4 .param/l "gi" 2 32, +C4<00>;
+v010EFC90_0 .net *"_s2", 7 0, v010EFB88_0; 1 drivers
+S_012B83C0 .scope generate, "gen_wflat[1]" "gen_wflat[1]" 2 32, 2 32, S_012B8090;
+ .timescale 0 0;
+P_012BA534 .param/l "gi" 2 32, +C4<01>;
+v010F0108_0 .net *"_s2", 7 0, v010EFB88_1; 1 drivers
+S_012B8998 .scope generate, "gen_wflat[2]" "gen_wflat[2]" 2 32, 2 32, S_012B8090;
+ .timescale 0 0;
+P_012BA494 .param/l "gi" 2 32, +C4<010>;
+v010EF950_0 .net *"_s2", 7 0, v010EFB88_2; 1 drivers
+S_012B8338 .scope generate, "gen_wflat[3]" "gen_wflat[3]" 2 32, 2 32, S_012B8090;
+ .timescale 0 0;
+P_012BA3F4 .param/l "gi" 2 32, +C4<011>;
+v010EF8F8_0 .net *"_s2", 7 0, v010EFB88_3; 1 drivers
+S_012B7D60 .scope generate, "gen_wflat[4]" "gen_wflat[4]" 2 32, 2 32, S_012B8090;
+ .timescale 0 0;
+P_012BA474 .param/l "gi" 2 32, +C4<0100>;
+v010EF8A0_0 .net *"_s2", 7 0, v010EFB88_4; 1 drivers
+S_012B8668 .scope generate, "gen_wflat[5]" "gen_wflat[5]" 2 32, 2 32, S_012B8090;
+ .timescale 0 0;
+P_012BA574 .param/l "gi" 2 32, +C4<0101>;
+v012B35A0_0 .net *"_s2", 7 0, v010EFB88_5; 1 drivers
+S_012B8AA8 .scope generate, "gen_wflat[6]" "gen_wflat[6]" 2 32, 2 32, S_012B8090;
+ .timescale 0 0;
+P_012BA394 .param/l "gi" 2 32, +C4<0110>;
+v012B3548_0 .net *"_s2", 7 0, v010EFB88_6; 1 drivers
+S_012B8888 .scope generate, "gen_wflat[7]" "gen_wflat[7]" 2 32, 2 32, S_012B8090;
+ .timescale 0 0;
+P_012BA314 .param/l "gi" 2 32, +C4<0111>;
+v012B34F0_0 .net *"_s2", 7 0, v010EFB88_7; 1 drivers
+S_012B81A0 .scope generate, "gen_wflat[8]" "gen_wflat[8]" 2 32, 2 32, S_012B8090;
+ .timescale 0 0;
+P_012BA514 .param/l "gi" 2 32, +C4<01000>;
+v012B3660_0 .net *"_s2", 7 0, v010EFB88_8; 1 drivers
+    .scope S_012B8090;
+T_0 ;
+    %wait E_012BA4F0;
+    %load/v 8, v010EFA28_0, 1;
+    %inv 8, 1;
+    %jmp/0xz  T_0.0, 8;
+    %set/v v010EFEA0_0, 0, 32;
+T_0.2 ;
+    %load/v 8, v010EFEA0_0, 32;
+   %cmpi/s 8, 9, 32;
+    %jmp/0xz T_0.3, 5;
+    %ix/getv/s 3, v010EFEA0_0;
+    %jmp/1 t_0, 4;
+    %ix/load 0, 8, 0; word width
+    %ix/load 1, 0, 0; part off
+    %assign/av v010EFB88, 0, 0;
+t_0 ;
+    %ix/load 0, 1, 0;
+    %load/vp0/s 8, v010EFEA0_0, 32;
+    %set/v v010EFEA0_0, 8, 32;
+    %jmp T_0.2;
+T_0.3 ;
+    %jmp T_0.1;
+T_0.0 ;
+    %load/v 8, v010F0058_0, 1;
+    %jmp/0xz  T_0.4, 8;
+    %load/v 8, v010EFA80_0, 8;
+    %ix/getv 3, v010EFD98_0;
+    %jmp/1 t_1, 4;
+    %ix/load 0, 8, 0; word width
+    %ix/load 1, 0, 0; part off
+    %assign/av v010EFB88, 0, 8;
+t_1 ;
+T_0.4 ;
+T_0.1 ;
+    %jmp T_0;
+    .thread T_0;
+# The file index is used to find the file name in the following table.
+:file_names 3;
+    "N/A";
+    "<interactive>";
+    "weight_buffer.v";

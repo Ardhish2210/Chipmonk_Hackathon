@@ -1,0 +1,207 @@
+#! /c/iverilog/bin/vvp
+:ivl_version "0.9.7 " "(v0_9_7)";
+:vpi_time_precision + 0;
+:vpi_module "system";
+:vpi_module "v2005_math";
+:vpi_module "va_math";
+S_01103198 .scope module, "accumulator" "accumulator" 2 24;
+ .timescale 0 0;
+P_010D309C .param/l "ACC_WIDTH" 2 26, +C4<0100000>;
+P_010D30B0 .param/l "MAC_UNITS" 2 27, +C4<01001>;
+P_010D30C4 .param/l "PROD_WIDTH" 2 25, +C4<010000>;
+v01110408_0 .net "clk", 0 0, C4<z>; 0 drivers
+v01110AE8_0 .var/i "i", 31 0;
+v011109E0 .array "padded", 8 0;
+v011109E0_0 .net/s v011109E0 0, 31 0, L_01110618; 1 drivers
+v011109E0_1 .net/s v011109E0 1, 31 0, L_01110670; 1 drivers
+v011109E0_2 .net/s v011109E0 2, 31 0, L_01110DA8; 1 drivers
+v011109E0_3 .net/s v011109E0 3, 31 0, L_011106C8; 1 drivers
+v011109E0_4 .net/s v011109E0 4, 31 0, L_01111010; 1 drivers
+v011109E0_5 .net/s v011109E0 5, 31 0, L_01110F08; 1 drivers
+v011109E0_6 .net/s v011109E0 6, 31 0, L_01110F60; 1 drivers
+v011109E0_7 .net/s v011109E0 7, 31 0, L_0113CA58; 1 drivers
+v011109E0_8 .net/s v011109E0 8, 31 0, L_0113CCC0; 1 drivers
+v01110930_0 .net/s "products", 143 0, C4<zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz>; 0 drivers
+v01110720_0 .var/s "result", 31 0;
+v01110A90_0 .net "rst_n", 0 0, C4<z>; 0 drivers
+v01110A38_0 .var/s "sum_comb", 31 0;
+v01110B40_0 .net "valid_in", 0 0, C4<z>; 0 drivers
+v01110CA0_0 .var "valid_out", 0 0;
+E_010DE470 .event posedge, v01110408_0;
+E_010DE170/0 .event edge, v01110A38_0, v01110AE8_0, v011109E0_0, v011109E0_1;
+E_010DE170/1 .event edge, v011109E0_2, v011109E0_3, v011109E0_4, v011109E0_5;
+E_010DE170/2 .event edge, v011109E0_6, v011109E0_7, v011109E0_8;
+E_010DE170 .event/or E_010DE170/0, E_010DE170/1, E_010DE170/2;
+L_01110880 .part C4<zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz>, 15, 1;
+L_011104B8 .part C4<zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz>, 0, 16;
+L_01110828 .part C4<zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz>, 31, 1;
+L_01110460 .part C4<zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz>, 16, 16;
+L_01110BF0 .part C4<zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz>, 47, 1;
+L_01110C48 .part C4<zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz>, 32, 16;
+L_01110778 .part C4<zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz>, 63, 1;
+L_01110568 .part C4<zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz>, 48, 16;
+L_011107D0 .part C4<zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz>, 79, 1;
+L_011112D0 .part C4<zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz>, 64, 16;
+L_01111170 .part C4<zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz>, 95, 1;
+L_01111220 .part C4<zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz>, 80, 16;
+L_01111068 .part C4<zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz>, 111, 1;
+L_011110C0 .part C4<zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz>, 96, 16;
+L_01110EB0 .part C4<zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz>, 127, 1;
+L_01111118 .part C4<zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz>, 112, 16;
+L_0113CB08 .part C4<zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz>, 143, 1;
+L_0113CB60 .part C4<zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz>, 128, 16;
+S_01102A28 .scope generate, "gen_pad[0]" "gen_pad[0]" 2 50, 2 50, S_01103198;
+ .timescale 0 0;
+P_010DDFF4 .param/l "gi" 2 50, +C4<00>;
+v011108D8_0 .net *"_s1", 0 0, L_01110880; 1 drivers
+v011105C0_0 .net *"_s2", 15 0, L_01110B98; 1 drivers
+v011103B0_0 .net *"_s4", 15 0, L_011104B8; 1 drivers
+LS_01110B98_0_0 .concat [ 1 1 1 1], L_01110880, L_01110880, L_01110880, L_01110880;
+LS_01110B98_0_4 .concat [ 1 1 1 1], L_01110880, L_01110880, L_01110880, L_01110880;
+LS_01110B98_0_8 .concat [ 1 1 1 1], L_01110880, L_01110880, L_01110880, L_01110880;
+LS_01110B98_0_12 .concat [ 1 1 1 1], L_01110880, L_01110880, L_01110880, L_01110880;
+L_01110B98 .concat [ 4 4 4 4], LS_01110B98_0_0, LS_01110B98_0_4, LS_01110B98_0_8, LS_01110B98_0_12;
+L_01110618 .concat [ 16 16 0 0], L_011104B8, L_01110B98;
+S_011029A0 .scope generate, "gen_pad[1]" "gen_pad[1]" 2 50, 2 50, S_01103198;
+ .timescale 0 0;
+P_010DDFB4 .param/l "gi" 2 50, +C4<01>;
+v01110CF8_0 .net *"_s1", 0 0, L_01110828; 1 drivers
+v01110988_0 .net *"_s2", 15 0, L_01110D50; 1 drivers
+v01110E58_0 .net *"_s4", 15 0, L_01110460; 1 drivers
+LS_01110D50_0_0 .concat [ 1 1 1 1], L_01110828, L_01110828, L_01110828, L_01110828;
+LS_01110D50_0_4 .concat [ 1 1 1 1], L_01110828, L_01110828, L_01110828, L_01110828;
+LS_01110D50_0_8 .concat [ 1 1 1 1], L_01110828, L_01110828, L_01110828, L_01110828;
+LS_01110D50_0_12 .concat [ 1 1 1 1], L_01110828, L_01110828, L_01110828, L_01110828;
+L_01110D50 .concat [ 4 4 4 4], LS_01110D50_0_0, LS_01110D50_0_4, LS_01110D50_0_8, LS_01110D50_0_12;
+L_01110670 .concat [ 16 16 0 0], L_01110460, L_01110D50;
+S_01103110 .scope generate, "gen_pad[2]" "gen_pad[2]" 2 50, 2 50, S_01103198;
+ .timescale 0 0;
+P_010DDE94 .param/l "gi" 2 50, +C4<010>;
+v01103D88_0 .net *"_s1", 0 0, L_01110BF0; 1 drivers
+v01103E38_0 .net *"_s2", 15 0, L_01110510; 1 drivers
+v01103E90_0 .net *"_s4", 15 0, L_01110C48; 1 drivers
+LS_01110510_0_0 .concat [ 1 1 1 1], L_01110BF0, L_01110BF0, L_01110BF0, L_01110BF0;
+LS_01110510_0_4 .concat [ 1 1 1 1], L_01110BF0, L_01110BF0, L_01110BF0, L_01110BF0;
+LS_01110510_0_8 .concat [ 1 1 1 1], L_01110BF0, L_01110BF0, L_01110BF0, L_01110BF0;
+LS_01110510_0_12 .concat [ 1 1 1 1], L_01110BF0, L_01110BF0, L_01110BF0, L_01110BF0;
+L_01110510 .concat [ 4 4 4 4], LS_01110510_0_0, LS_01110510_0_4, LS_01110510_0_8, LS_01110510_0_12;
+L_01110DA8 .concat [ 16 16 0 0], L_01110C48, L_01110510;
+S_011033B8 .scope generate, "gen_pad[3]" "gen_pad[3]" 2 50, 2 50, S_01103198;
+ .timescale 0 0;
+P_010DDF14 .param/l "gi" 2 50, +C4<011>;
+v01104150_0 .net *"_s1", 0 0, L_01110778; 1 drivers
+v01103A70_0 .net *"_s2", 15 0, L_01110E00; 1 drivers
+v01103DE0_0 .net *"_s4", 15 0, L_01110568; 1 drivers
+LS_01110E00_0_0 .concat [ 1 1 1 1], L_01110778, L_01110778, L_01110778, L_01110778;
+LS_01110E00_0_4 .concat [ 1 1 1 1], L_01110778, L_01110778, L_01110778, L_01110778;
+LS_01110E00_0_8 .concat [ 1 1 1 1], L_01110778, L_01110778, L_01110778, L_01110778;
+LS_01110E00_0_12 .concat [ 1 1 1 1], L_01110778, L_01110778, L_01110778, L_01110778;
+L_01110E00 .concat [ 4 4 4 4], LS_01110E00_0_0, LS_01110E00_0_4, LS_01110E00_0_8, LS_01110E00_0_12;
+L_011106C8 .concat [ 16 16 0 0], L_01110568, L_01110E00;
+S_01103088 .scope generate, "gen_pad[4]" "gen_pad[4]" 2 50, 2 50, S_01103198;
+ .timescale 0 0;
+P_010DE114 .param/l "gi" 2 50, +C4<0100>;
+v01103CD8_0 .net *"_s1", 0 0, L_011107D0; 1 drivers
+v011040F8_0 .net *"_s2", 15 0, L_01111328; 1 drivers
+v01103D30_0 .net *"_s4", 15 0, L_011112D0; 1 drivers
+LS_01111328_0_0 .concat [ 1 1 1 1], L_011107D0, L_011107D0, L_011107D0, L_011107D0;
+LS_01111328_0_4 .concat [ 1 1 1 1], L_011107D0, L_011107D0, L_011107D0, L_011107D0;
+LS_01111328_0_8 .concat [ 1 1 1 1], L_011107D0, L_011107D0, L_011107D0, L_011107D0;
+LS_01111328_0_12 .concat [ 1 1 1 1], L_011107D0, L_011107D0, L_011107D0, L_011107D0;
+L_01111328 .concat [ 4 4 4 4], LS_01111328_0_0, LS_01111328_0_4, LS_01111328_0_8, LS_01111328_0_12;
+L_01111010 .concat [ 16 16 0 0], L_011112D0, L_01111328;
+S_01103770 .scope generate, "gen_pad[5]" "gen_pad[5]" 2 50, 2 50, S_01103198;
+ .timescale 0 0;
+P_010DE0F4 .param/l "gi" 2 50, +C4<0101>;
+v01103BD0_0 .net *"_s1", 0 0, L_01111170; 1 drivers
+v01103FF0_0 .net *"_s2", 15 0, L_011111C8; 1 drivers
+v01103C28_0 .net *"_s4", 15 0, L_01111220; 1 drivers
+LS_011111C8_0_0 .concat [ 1 1 1 1], L_01111170, L_01111170, L_01111170, L_01111170;
+LS_011111C8_0_4 .concat [ 1 1 1 1], L_01111170, L_01111170, L_01111170, L_01111170;
+LS_011111C8_0_8 .concat [ 1 1 1 1], L_01111170, L_01111170, L_01111170, L_01111170;
+LS_011111C8_0_12 .concat [ 1 1 1 1], L_01111170, L_01111170, L_01111170, L_01111170;
+L_011111C8 .concat [ 4 4 4 4], LS_011111C8_0_0, LS_011111C8_0_4, LS_011111C8_0_8, LS_011111C8_0_12;
+L_01110F08 .concat [ 16 16 0 0], L_01111220, L_011111C8;
+S_01103660 .scope generate, "gen_pad[6]" "gen_pad[6]" 2 50, 2 50, S_01103198;
+ .timescale 0 0;
+P_010DDEF4 .param/l "gi" 2 50, +C4<0110>;
+v01103AC8_0 .net *"_s1", 0 0, L_01111068; 1 drivers
+v01103A18_0 .net *"_s2", 15 0, L_01111278; 1 drivers
+v01103C80_0 .net *"_s4", 15 0, L_011110C0; 1 drivers
+LS_01111278_0_0 .concat [ 1 1 1 1], L_01111068, L_01111068, L_01111068, L_01111068;
+LS_01111278_0_4 .concat [ 1 1 1 1], L_01111068, L_01111068, L_01111068, L_01111068;
+LS_01111278_0_8 .concat [ 1 1 1 1], L_01111068, L_01111068, L_01111068, L_01111068;
+LS_01111278_0_12 .concat [ 1 1 1 1], L_01111068, L_01111068, L_01111068, L_01111068;
+L_01111278 .concat [ 4 4 4 4], LS_01111278_0_0, LS_01111278_0_4, LS_01111278_0_8, LS_01111278_0_12;
+L_01110F60 .concat [ 16 16 0 0], L_011110C0, L_01111278;
+S_01102E68 .scope generate, "gen_pad[7]" "gen_pad[7]" 2 50, 2 50, S_01103198;
+ .timescale 0 0;
+P_010DE234 .param/l "gi" 2 50, +C4<0111>;
+v01103F40_0 .net *"_s1", 0 0, L_01110EB0; 1 drivers
+v01103EE8_0 .net *"_s2", 15 0, L_01110FB8; 1 drivers
+v01103F98_0 .net *"_s4", 15 0, L_01111118; 1 drivers
+LS_01110FB8_0_0 .concat [ 1 1 1 1], L_01110EB0, L_01110EB0, L_01110EB0, L_01110EB0;
+LS_01110FB8_0_4 .concat [ 1 1 1 1], L_01110EB0, L_01110EB0, L_01110EB0, L_01110EB0;
+LS_01110FB8_0_8 .concat [ 1 1 1 1], L_01110EB0, L_01110EB0, L_01110EB0, L_01110EB0;
+LS_01110FB8_0_12 .concat [ 1 1 1 1], L_01110EB0, L_01110EB0, L_01110EB0, L_01110EB0;
+L_01110FB8 .concat [ 4 4 4 4], LS_01110FB8_0_0, LS_01110FB8_0_4, LS_01110FB8_0_8, LS_01110FB8_0_12;
+L_0113CA58 .concat [ 16 16 0 0], L_01111118, L_01110FB8;
+S_01102DE0 .scope generate, "gen_pad[8]" "gen_pad[8]" 2 50, 2 50, S_01103198;
+ .timescale 0 0;
+P_010DE1F4 .param/l "gi" 2 50, +C4<01000>;
+v011040A0_0 .net *"_s1", 0 0, L_0113CB08; 1 drivers
+v01103B20_0 .net *"_s2", 15 0, L_0113CC68; 1 drivers
+v01103B78_0 .net *"_s4", 15 0, L_0113CB60; 1 drivers
+LS_0113CC68_0_0 .concat [ 1 1 1 1], L_0113CB08, L_0113CB08, L_0113CB08, L_0113CB08;
+LS_0113CC68_0_4 .concat [ 1 1 1 1], L_0113CB08, L_0113CB08, L_0113CB08, L_0113CB08;
+LS_0113CC68_0_8 .concat [ 1 1 1 1], L_0113CB08, L_0113CB08, L_0113CB08, L_0113CB08;
+LS_0113CC68_0_12 .concat [ 1 1 1 1], L_0113CB08, L_0113CB08, L_0113CB08, L_0113CB08;
+L_0113CC68 .concat [ 4 4 4 4], LS_0113CC68_0_0, LS_0113CC68_0_4, LS_0113CC68_0_8, LS_0113CC68_0_12;
+L_0113CCC0 .concat [ 16 16 0 0], L_0113CB60, L_0113CC68;
+    .scope S_01103198;
+T_0 ;
+    %wait E_010DE170;
+    %set/v v01110A38_0, 0, 32;
+    %set/v v01110AE8_0, 0, 32;
+T_0.0 ;
+    %load/v 8, v01110AE8_0, 32;
+   %cmpi/s 8, 9, 32;
+    %jmp/0xz T_0.1, 5;
+    %load/v 8, v01110A38_0, 32;
+    %ix/getv/s 3, v01110AE8_0;
+    %load/av 40, v011109E0, 32;
+    %add 8, 40, 32;
+    %set/v v01110A38_0, 8, 32;
+    %ix/load 0, 1, 0;
+    %load/vp0/s 8, v01110AE8_0, 32;
+    %set/v v01110AE8_0, 8, 32;
+    %jmp T_0.0;
+T_0.1 ;
+    %jmp T_0;
+    .thread T_0, $push;
+    .scope S_01103198;
+T_1 ;
+    %wait E_010DE470;
+    %load/v 8, v01110A90_0, 1;
+    %inv 8, 1;
+    %jmp/0xz  T_1.0, 8;
+    %ix/load 0, 32, 0;
+    %assign/v0 v01110720_0, 0, 0;
+    %ix/load 0, 1, 0;
+    %assign/v0 v01110CA0_0, 0, 0;
+    %jmp T_1.1;
+T_1.0 ;
+    %load/v 8, v01110A38_0, 32;
+    %ix/load 0, 32, 0;
+    %assign/v0 v01110720_0, 0, 8;
+    %load/v 8, v01110B40_0, 1;
+    %ix/load 0, 1, 0;
+    %assign/v0 v01110CA0_0, 0, 8;
+T_1.1 ;
+    %jmp T_1;
+    .thread T_1;
+# The file index is used to find the file name in the following table.
+:file_names 3;
+    "N/A";
+    "<interactive>";
+    "accumulator.v";
