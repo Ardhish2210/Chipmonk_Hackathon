@@ -10,7 +10,7 @@
 
 module image_rom #(
     parameter DATA_WIDTH   = 8,
-    parameter IMAGE_PIXELS = 64
+    parameter IMAGE_PIXELS = 4096
 )(
     input  wire                         clk,
     input  wire                         rst,

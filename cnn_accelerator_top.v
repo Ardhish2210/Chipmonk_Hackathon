@@ -31,15 +31,15 @@
 `include "feature_map_store.v"
 
 module cnn_accelerator_top #(
-    parameter IMAGE_WIDTH  = 8,
-    parameter IMAGE_HEIGHT = 8,
+    parameter IMAGE_WIDTH  = 64,
+    parameter IMAGE_HEIGHT = 64,
     parameter KERNEL_SIZE  = 3,
     parameter DATA_WIDTH   = 8,
     parameter PROD_WIDTH   = 16,
     parameter ACC_WIDTH    = 32,
     parameter OUT_WIDTH    = 8,
     parameter MAC_UNITS    = 9,      // KERNEL_SIZE × KERNEL_SIZE
-    parameter TOTAL_OUT    = 36,     // (8-3+1)²
+    parameter TOTAL_OUT    = 3844,   // (64-3+1)²
     parameter STORE_WIDTH  = 16
 )(
     // ── Basys-3 FPGA ports ────────────────────────────────────────────────

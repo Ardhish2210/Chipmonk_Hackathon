@@ -13,8 +13,8 @@ module tb_cnn_fpga_top;
     // -------------------------------------------------------------------------
     // Parameters
     // -------------------------------------------------------------------------
-    parameter IMAGE_WIDTH  = 8;
-    parameter IMAGE_HEIGHT = 8;
+    parameter IMAGE_WIDTH  = 64;
+    parameter IMAGE_HEIGHT = 64;
     parameter KERNEL_SIZE  = 3;
     parameter DATA_WIDTH   = 8;
     parameter PROD_WIDTH   = 16;
@@ -23,9 +23,9 @@ module tb_cnn_fpga_top;
     parameter MAC_UNITS    = 9;
     parameter STORE_WIDTH  = 16;
 
-    localparam OUT_W     = IMAGE_WIDTH  - KERNEL_SIZE + 1;  // 6
-    localparam OUT_H     = IMAGE_HEIGHT - KERNEL_SIZE + 1;  // 6
-    localparam TOTAL_OUT = OUT_W * OUT_H;                   // 36
+    localparam OUT_W     = IMAGE_WIDTH  - KERNEL_SIZE + 1;  // 62
+    localparam OUT_H     = IMAGE_HEIGHT - KERNEL_SIZE + 1;  // 62
+    localparam TOTAL_OUT = OUT_W * OUT_H;                   // 3844
 
     // -------------------------------------------------------------------------
     // Clock – 100 MHz
@@ -79,8 +79,8 @@ module tb_cnn_fpga_top;
     // -------------------------------------------------------------------------
     // SW golden model (Laplacian, same as before)
     // -------------------------------------------------------------------------
-    reg [7:0]        img_raw  [0:63];
-    reg signed [7:0] img      [0:63];
+    reg [7:0]        img_raw  [0:4095];
+    reg signed [7:0] img      [0:4095];
     reg signed [7:0] krn      [0:8];
     reg [15:0]       expected [0:TOTAL_OUT-1];
 
@@ -115,7 +115,7 @@ module tb_cnn_fpga_top;
 
         // ── Load reference image (same file as image_rom uses) ────────────
         $readmemh("image.mem", img_raw);
-        for (i = 0; i < 64; i = i + 1)
+        for (i = 0; i < 4096; i = i + 1)
             img[i] = $signed(img_raw[i]);
 
         // ── Laplacian kernel ──────────────────────────────────────────────
@@ -145,7 +145,7 @@ module tb_cnn_fpga_top;
         begin : wait_loop
             integer timeout_cnt;
             timeout_cnt = 0;
-            while (cap_idx < TOTAL_OUT && timeout_cnt < 2000) begin
+            while (cap_idx < TOTAL_OUT && timeout_cnt < 200000) begin
                 @(posedge clk);
                 timeout_cnt = timeout_cnt + 1;
             end
@@ -157,26 +157,35 @@ module tb_cnn_fpga_top;
 
         // ── Display & check ───────────────────────────────────────────────
         $display("========================================");
-        $display(" CNN FPGA Top  –  Output Feature Map");
+        $display(" CNN FPGA Top  –  Input and Output Map");
         $display("========================================");
-        $display("  RTL output (16-bit, 6x6):");
-        $display("      C0    C1    C2    C3    C4    C5");
-        for (rr = 0; rr < OUT_H; rr = rr + 1) begin
-            $write(" R%0d |", rr);
-            for (cc = 0; cc < OUT_W; cc = cc + 1)
-                $write("  %3d |", captured[rr*OUT_W+cc]);
+        
+        $display("\n  Input Image (8-bit, 64x64):");
+        for (rr = 0; rr < IMAGE_HEIGHT; rr = rr + 1) begin
+            $write(" I%02d |", rr);
+            for (cc = 0; cc < IMAGE_WIDTH; cc = cc + 1)
+                $write(" %4d", img[rr*IMAGE_WIDTH+cc]);
             $display("");
         end
-        $display("");
-        $display("  SW reference (6x6):");
-        $display("      C0    C1    C2    C3    C4    C5");
+
+        $display("\n  Checking 62x62 RTL output vs SW reference...");
+        
+        $display("\n  RTL output (16-bit, 62x62):");
         for (rr = 0; rr < OUT_H; rr = rr + 1) begin
-            $write(" R%0d |", rr);
+            $write(" R%02d |", rr);
             for (cc = 0; cc < OUT_W; cc = cc + 1)
-                $write("  %3d |", expected[rr*OUT_W+cc]);
+                $write(" %4d", captured[rr*OUT_W+cc]);
             $display("");
         end
-        $display("");
+
+        $display("\n  SW reference (16-bit, 62x62):");
+        for (rr = 0; rr < OUT_H; rr = rr + 1) begin
+            $write(" R%02d |", rr);
+            for (cc = 0; cc < OUT_W; cc = cc + 1)
+                $write(" %4d", expected[rr*OUT_W+cc]);
+            $display("");
+        end
+        $display("\n");
 
         mismatch = 0;
         for (i = 0; i < TOTAL_OUT; i = i + 1)
