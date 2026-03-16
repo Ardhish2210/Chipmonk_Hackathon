@@ -50,15 +50,16 @@ module image_rom #(
             end
 
             if (running) begin
-                // Output current pixel
+                // Output current pixel with valid=1 for ALL pixels incl. last
                 pixel_out   <= $signed(mem[rd_ptr]);
                 pixel_valid <= 1'b1;
 
                 if (rd_ptr == IMAGE_PIXELS - 1) begin
+                    // Last pixel output this cycle with valid=1 (do NOT override)
                     rd_ptr     <= 0;
                     running    <= 1'b0;
                     frame_done <= 1'b1;
-                    pixel_valid <= 1'b0;  // no valid on the wrap cycle
+                    // pixel_valid stays 1'b1 (set above) for the last pixel
                 end else begin
                     rd_ptr <= rd_ptr + 1;
                 end
