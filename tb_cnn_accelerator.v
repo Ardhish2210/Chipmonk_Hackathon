@@ -309,6 +309,7 @@ module tb_cnn_accelerator;
     // =========================================================================
     // Main stimulus
     // =========================================================================
+    
     initial begin
         $dumpfile("tb_cnn_accelerator.vcd");
         $dumpvars(0, tb_cnn_accelerator);
